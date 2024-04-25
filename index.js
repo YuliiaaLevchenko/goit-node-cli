@@ -1,10 +1,11 @@
+const { program } = require('commander');
 const { listContacts, getContactById, addContact, removeContact } = require('./contacts');
 
 async function invokeAction({ action, id, name, email, phone }) {
     switch (action) {
       case 'list': 
         const contacts = await listContacts();
-        console.log('All contacts:', contacts);
+        console.table(contacts);
         break;
   
       case 'get': 
@@ -34,3 +35,14 @@ async function invokeAction({ action, id, name, email, phone }) {
         console.log('Unknown action:', action);
     }
   }
+
+  program
+  .option('-a, --action <type>', 'action type')
+  .option('-i, --id <type>', 'contact ID')
+  .option('-n, --name <type>', 'contact name')
+  .option('-e, --email <type>', 'contact email')
+  .option('-p, --phone <type>', 'contact phone')
+  .parse(process.argv);
+
+  const options = program.opts();
+invokeAction(options);
